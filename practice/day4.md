@@ -124,14 +124,22 @@ df = pd.DataFrame(data)
 
 ### Q1. 데이터 전체 결측치 개수를 출력하라.
 
+<details>
+<summary>풀이 보기</summary>
+
 #### 풀이 ✅
 ```python
 print(df.isnull().sum().sum())  # 3
 ```
 
+</details>
+
 ---
 
 ### Q2. 결측치가 있는 컬럼과 각 개수를 출력하라.
+
+<details>
+<summary>풀이 보기</summary>
 
 #### 풀이 ✅
 ```python
@@ -141,9 +149,14 @@ print(s[s > 0])
 # count     1
 ```
 
+</details>
+
 ---
 
 ### Q3. region 결측치를 '기타'로 채운 후, region 컬럼의 최빈값을 출력하라.
+
+<details>
+<summary>풀이 보기</summary>
 
 #### 풀이 ✅
 ```python
@@ -151,9 +164,14 @@ f = df['region'].fillna('기타')
 print(f.mode()[0])  # 서울
 ```
 
+</details>
+
 ---
 
 ### Q4. count 결측치를 count 평균으로 채운 뒤, 전체 count 합계를 출력하라.
+
+<details>
+<summary>풀이 보기</summary>
 
 #### 풀이 ✅
 ```python
@@ -161,9 +179,14 @@ c = df['count'].fillna(df['count'].mean())
 print(c.sum())  # 240.0
 ```
 
+</details>
+
 ---
 
 ### Q5. region에 결측치가 있는 행을 제거한 후 sales 평균을 소수 셋째 자리까지 출력하라.
+
+<details>
+<summary>풀이 보기</summary>
 
 #### 풀이 ✅
 ```python
@@ -171,18 +194,28 @@ d = df.dropna(subset=['region'])
 print(round(d['sales'].mean(), 3))  # 110.25
 ```
 
+</details>
+
 ---
 
 ### Q6. 전체 컬럼 기준으로 완전히 같은 중복 행이 몇 개인지 출력하라. (첫 번째 등장 제외)
+
+<details>
+<summary>풀이 보기</summary>
 
 #### 풀이 ✅
 ```python
 print(df.duplicated().sum())  # 1
 ```
 
+</details>
+
 ---
 
 ### Q7. 완전히 같은 중복 행을 제거하고(첫 번째 유지), region 결측치를 '기타'로 채워라. region별 sales 평균을 구하고 내림차순 정렬했을 때 첫 번째 region을 출력하라.
+
+<details>
+<summary>풀이 보기</summary>
 
 #### 풀이 ✅
 ```python
@@ -192,9 +225,14 @@ result = df.groupby('region')['sales'].mean().sort_values(ascending=False)
 print(result.index[0])  # 대구
 ```
 
+</details>
+
 ---
 
 ### Q8. 완전히 같은 중복 행을 제거하고, region 결측치가 있는 행을 제거하라. region별 sales 합계를 구하고, 합계가 전체 region 평균 이상인 region만 남겨라. sales 합계 내림차순으로 정렬했을 때 첫 번째 region을 출력하라.
+
+<details>
+<summary>풀이 보기</summary>
 
 #### 풀이 ✅
 ```python
@@ -204,3 +242,5 @@ total = df.groupby('region')['sales'].sum()
 result = total[total >= total.mean()].sort_values(ascending=False)
 print(result.index[0])  # 서울
 ```
+
+</details>
