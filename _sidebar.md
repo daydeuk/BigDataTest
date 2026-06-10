@@ -8,6 +8,8 @@
   - [Day 2 — Pandas 기초 1](practice/day2.md)
   - [Day 3 — Pandas 기초 2](practice/day3.md)
   - [Day 4 — 결측치 + 중복](practice/day4.md)
+  - [Day 5 — 그룹/집계 + 출력 패턴](practice/day5.md)
+  - [Day 6 — 날짜/시간 처리](practice/day6.md)
 
 - **복습 풀이**
   - [Day 1](review/day1_review.md)
