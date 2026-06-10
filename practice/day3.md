@@ -17,56 +17,54 @@ df = pd.DataFrame(data)
 
 ---
 
-## Q1. 2번째 행(인덱스 1)의 name과 score 값을 .loc로 각각 출력하세요.
+## Q1. .iloc로 3번째 행(Charlie)의 score 값만 출력하세요.
 
 ### 내 풀이 ✅
 ```python
-print(df.loc[1, 'name'])
-print(df.loc[1, 'score'])
+df.iloc[2, 2]
 ```
 
 ---
 
-## Q2. .iloc로 마지막 행 전체를 출력하세요.
+## Q2. .loc로 인덱스 0~2행의 name, dept 컬럼만 출력하세요.
 
 ### 내 풀이 ✅
 ```python
-print(df.iloc[-1])
+df.loc[0:2, ['name', 'dept']]
 ```
 
-> `-1`은 마지막 위치. `.loc[-1]`은 라벨 -1이 없으면 에러 — 마지막 행은 `iloc[-1]` 이 안전.
+> `.loc` 슬라이싱은 끝 인덱스 **포함** — `0:2` 는 0, 1, 2행 모두 반환.
 
 ---
 
-## Q3. age가 30 이상인 사람의 name과 age만 출력하세요.
+## Q3. score가 70 미만인 사람의 name과 score를 출력하세요.
 
 ### 내 풀이 ✅
 ```python
-print(df[df['age'] >= 30][['name', 'age']])
-
-# .loc로 한 번에 (더 간결)
-print(df.loc[df['age'] >= 30, ['name', 'age']])
+df.loc[df['score'] < 70, ['name', 'score']]
 ```
-
-> `df.loc[조건, ['컬럼']]` 으로 필터링 + 컬럼 선택을 한 줄에 가능.
 
 ---
 
-## Q4. gender가 'M' 이고 score가 70 이상인 사람의 전체 정보를 출력하세요.
+## Q4. dept가 '개발'이고 age가 30 이상인 사람의 전체 정보를 출력하세요.
 
 ### 내 풀이 ✅
 ```python
-q4 = df[(df['gender'] == 'M') & (df['score'] >= 70)]
-print(q4)
+df.loc[(df['age'] >= 30) & (df['dept'] == '개발')]
 ```
 
 > AND 조건은 `&`, OR 조건은 `|`. 각 조건은 반드시 `()`로 묶기. Python `and`/`or` 쓰면 에러.
 
 ---
 
-## Q5. dept가 '개발' 이거나 age가 25 이하인 사람의 name, dept, age 컬럼만 출력하세요.
+## Q5. gender가 'F'이거나 score가 85 이상인 사람의 name, gender, score만 출력하세요.
 
 ### 내 풀이 ✅
 ```python
-print(df.loc[(df['dept'] == '개발') | (df['age'] <= 25)][['name', 'dept', 'age']])
+df.loc[(df['gender'] == 'F') | (df['score'] >= 85)][['name', 'gender', 'score']]
 ```
+
+> `.loc[조건, 컬럼리스트]` 형태로 한 줄에 쓸 수도 있다.
+> ```python
+> df.loc[(df['gender'] == 'F') | (df['score'] >= 85), ['name', 'gender', 'score']]
+> ```
