@@ -108,7 +108,30 @@ print(df['membership_enc'].head(20).sum())
 
 ---
 
-### 3. train_test_split ★★★
+### 3. y (종속변수) — 분류 vs 회귀 ★★★
+
+y가 무슨 값이냐에 따라 문제 유형이 결정돼요.
+
+| y 값 | 문제 유형 | 예시 | 평가지표 |
+|---|---|---|---|
+| 0/1, 범주 | **분류** | churn, subscribe, grade | accuracy, f1, roc_auc |
+| 연속 숫자 | **회귀** | salary, price, delivery_time | RMSE, MAE |
+
+```python
+# 분류 — y가 0/1
+y = df['churn']          # 0 또는 1
+# stratify=y 사용 가능
+
+# 회귀 — y가 연속값
+y = df['salary']         # 3000, 4500, 7200 ...
+# stratify 사용 불가
+```
+
+> 문제에서 항상 어떤 컬럼을 y로 쓸지 명시해줌 — 그 값을 보고 분류/회귀 판단
+
+---
+
+### 4. train_test_split ★★★
 
 ```python
 from sklearn.model_selection import train_test_split
