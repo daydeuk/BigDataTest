@@ -68,7 +68,28 @@ scaled_df = pd.DataFrame(scaled, columns=['col1', 'col2'])
 
 ## 개념 정리
 
-### 1. 원핫인코딩 — `pd.get_dummies` ★★★
+### 1. 결측치 대체 — `SimpleImputer` ★★
+
+```python
+from sklearn.impute import SimpleImputer
+
+# 중앙값으로 대체
+imp = SimpleImputer(strategy='median')
+X_train_imp = imp.fit_transform(X_train)
+X_test_imp  = imp.transform(X_test)
+
+# strategy 옵션
+# 'mean'     — 평균
+# 'median'   — 중앙값
+# 'most_frequent' — 최빈값 (범주형에 사용)
+# 'constant' — 고정값 (fill_value 파라미터 함께 사용)
+```
+
+> pandas `fillna`와 달리 sklearn 파이프라인에 연결 가능. 시험에서는 `fillna`도 정답.
+
+---
+
+### 2. 원핫인코딩 — `pd.get_dummies` ★★★
 
 ```python
 # 기본 사용
@@ -89,7 +110,7 @@ print(region_cols)
 
 ---
 
-### 2. 라벨인코딩 — `LabelEncoder` ★★★
+### 3. 라벨인코딩 — `LabelEncoder` ★★★
 
 ```python
 from sklearn.preprocessing import LabelEncoder
@@ -108,7 +129,7 @@ print(df['membership_enc'].head(20).sum())
 
 ---
 
-### 3. y (종속변수) — 분류 vs 회귀 ★★★
+### 4. y (종속변수) — 분류 vs 회귀 ★★★
 
 y가 무슨 값이냐에 따라 문제 유형이 결정돼요.
 
@@ -131,7 +152,7 @@ y = df['salary']         # 3000, 4500, 7200 ...
 
 ---
 
-### 4. train_test_split ★★★
+### 5. train_test_split ★★★
 
 ```python
 from sklearn.model_selection import train_test_split
@@ -160,7 +181,7 @@ print(y_test.mean())
 
 ---
 
-### 4. 스케일링 — `StandardScaler`, `MinMaxScaler` ★★
+### 6. 스케일링 — `StandardScaler`, `MinMaxScaler` ★★
 
 ```python
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
@@ -181,28 +202,7 @@ X_test_scaled  = scaler.transform(X_test)
 
 ---
 
-### 5. 결측치 대체 — `SimpleImputer` ★★
-
-```python
-from sklearn.impute import SimpleImputer
-
-# 중앙값으로 대체
-imp = SimpleImputer(strategy='median')
-X_train_imp = imp.fit_transform(X_train)
-X_test_imp  = imp.transform(X_test)
-
-# strategy 옵션
-# 'mean'     — 평균
-# 'median'   — 중앙값
-# 'most_frequent' — 최빈값 (범주형에 사용)
-# 'constant' — 고정값 (fill_value 파라미터 함께 사용)
-```
-
-> pandas `fillna`와 달리 sklearn 파이프라인에 연결 가능. 시험에서는 `fillna`도 정답.
-
----
-
-### 6. merge / concat ★★
+### 7. merge / concat ★★
 
 ```python
 # merge — 키 기준으로 합치기 (SQL JOIN)
