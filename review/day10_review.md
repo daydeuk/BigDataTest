@@ -16,4 +16,13 @@
 
 | 문제 | 틀린 이유 | 올바른 코드 |
 |------|---------|-----------|
-| | | |
+| Q1 | `column=` 오타 (s 빠짐) | `pd.get_dummies(df, columns=[...])` |
+| Q1 | DataFrame에 직접 `startswith` 호출 불가 | `[c for c in df.columns if c.startswith('region_')]` |
+| Q2 | `head()` 순서 — 컬럼 선택 먼저 | `df['col'].head(10).sum()` |
+| Q4 | `mena()` 오타 | `mean()` |
+| Q5 | numpy 배열에 컬럼명 접근 불가 | `pd.DataFrame(scaled, columns=[...])` 변환 후 접근 |
+| Q7 | `groupby().mode()` 직접 불가 | `transform(lambda x: x.mode()[0])` |
+| Q7 | concat 전 Series 이름 미설정 | `region_mode.name = 'region_top_membership'` |
+| Q7 | `result.top(5)` → `head()` | `result.head()` |
+| Q8 | 불필요한 train_test_split 추가 | split 언급 없으면 전체 df에 바로 적용 |
+| Q8 | 변수명 대문자 `Scaler` | 관행상 소문자 `scaler` |
