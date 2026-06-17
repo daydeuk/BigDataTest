@@ -1,5 +1,46 @@
 # 10일차 — Sklearn 전처리 + 데이터 합치기
 
+## 전처리 순서 흐름 ★★★ (암기 필수)
+
+```
+1. 결측치 처리      fillna / SimpleImputer          ← split 전
+2. 인코딩           get_dummies / LabelEncoder       ← split 전
+3. X, y 분리        X = df.drop('target') / y = df['target']
+4. train_test_split test_size, random_state, stratify(분류만)
+5. 스케일링         fit_transform(train) / transform(test)  ← split 후
+```
+
+### 왜 이 순서인가?
+
+| 단계 | split 전/후 | 이유 |
+|---|---|---|
+| 결측치 처리 | **전** | 전체 데이터 기준 중앙값/평균 계산이 더 정확 |
+| 인코딩 | **전** | 문자→숫자 변환은 누수 없음. train/test 컬럼 구조 통일 |
+| 스케일링 | **후** | train 기준으로만 fit — test 정보가 train에 새어들면 데이터 누수 |
+
+### 스케일링 — split 필요 여부 구분
+
+| 상황 | split | 이유 |
+|---|---|---|
+| 문제에서 "train 기준 fit" 명시 | O | train/test 분리 후 적용 |
+| 문제에서 그냥 변환만 요구 | X | 전체 df에 바로 적용 |
+
+```python
+# split 필요한 경우 (Q5 패턴)
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled  = scaler.transform(X_test)   # fit_transform 금지!
+
+# split 불필요한 경우 (Q8 패턴)
+scaler = MinMaxScaler()
+scaled = scaler.fit_transform(df[['col1', 'col2']])
+scaled_df = pd.DataFrame(scaled, columns=['col1', 'col2'])
+```
+
+> **핵심**: 문제에 split 언급 있으면 split 후, 없으면 전체 df에 바로 적용
+
+---
+
 ## 개념 정리
 
 ### 1. 원핫인코딩 — `pd.get_dummies` ★★★
