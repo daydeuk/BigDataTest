@@ -1,25 +1,26 @@
 # 10일차 — Sklearn 전처리 + 데이터 합치기
 
-## Import 모음 ★★★ (암기 필수)
+## Import 모음 ★★★ (전처리 순서 기준)
 
 ```python
 import pandas as pd
 import numpy as np
 
-# 인코딩
-from sklearn.preprocessing import LabelEncoder
-
-# 스케일링
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-
-# 결측치
+# 1. 결측치 처리
 from sklearn.impute import SimpleImputer
 
-# 분할
+# 2. 인코딩 (get_dummies는 pandas 내장 — import 불필요)
+from sklearn.preprocessing import LabelEncoder
+
+# 3. X, y 분리 — import 불필요
+
+# 4. 분할
 from sklearn.model_selection import train_test_split
+
+# 5. 스케일링
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 ```
 
-> `get_dummies`는 pandas 내장 — import 불필요 (`pd.get_dummies()` 바로 사용)  
 > `StandardScaler`와 `MinMaxScaler`는 같은 경로 — 한 줄로 같이 import 가능
 
 ---
