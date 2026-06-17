@@ -19,6 +19,8 @@
   - [Day 10 — Sklearn 전처리 + 데이터 합치기](practice/day10.md)
 
 - **2유형 — ML 연습**
+  - [Day 11 — 분류 모델 완전](practice/day11.md)
+  - [Day 12 — 회귀 모델 완전](practice/day12.md)
   - [2유형 연습문제 (23문제)](practice/day10_type2_practice.md)
 
 - **3유형 — 통계 연습**
@@ -35,3 +37,5 @@
   - [Day 8](review/day8_review.md)
   - [Day 9](review/day9_review.md)
   - [Day 10](review/day10_review.md)
+  - [Day 11](review/day11_review.md)
+  - [Day 12](review/day12_review.md)
