@@ -21,6 +21,8 @@
 - **2유형 — ML 연습**
   - [Day 11 — 분류 모델 완전](practice/day11.md)
   - [Day 12 — 회귀 모델 완전](practice/day12.md)
+  - [Day 13 — 2유형 풀세트 반복](practice/day13.md)
+  - [Day 14+15 — 통계 검정 완전](practice/day14.md)
   - [2유형 연습문제 (23문제)](practice/day10_type2_practice.md)
 
 - **3유형 — 통계 연습**
@@ -39,3 +41,5 @@
   - [Day 10](review/day10_review.md)
   - [Day 11](review/day11_review.md)
   - [Day 12](review/day12_review.md)
+  - [Day 13](review/day13_review.md)
+  - [Day 14+15](review/day14_review.md)
