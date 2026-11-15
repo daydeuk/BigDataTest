@@ -5,3 +5,5 @@ datamanim_type1_reference.md
 practice/day10_type2_practice.md
 practice/day14_type3_practice.md
 data/
+.venv/
+__pycache__/

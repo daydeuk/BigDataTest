@@ -1,0 +1,19 @@
+{
+  // 시험 환경처럼 자동완성·힌트를 모두 끈다 (이 폴더에서만 적용)
+  "editor.quickSuggestions": { "other": "off", "comments": "off", "strings": "off" },
+  "editor.suggestOnTriggerCharacters": false,
+  "editor.wordBasedSuggestions": "off",
+  "editor.snippetSuggestions": "none",
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.tabCompletion": "off",
+  "editor.parameterHints.enabled": false,
+  "editor.inlineSuggest.enabled": false,
+  "editor.hover.enabled": false,
+  "editor.inlayHints.enabled": "off",
+
+  // AI 코드 제안 끄기
+  "github.copilot.enable": { "*": false },
+
+  // 실행할 Python은 프로젝트 가상환경
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python"
+}
