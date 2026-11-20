@@ -5,6 +5,8 @@
   - [📝 Day 2 전 복습 (Day 1 오답)](retake/복습_day1.md)
   - [Day 2 — groupby·agg·transform·value_counts](retake/day2.md)
   - [📝 Day 3 전 복습 (Day 2 오답·어려운 것)](retake/복습_day2.md)
+  - [Day 3 — 날짜·문자열·파생 컬럼·quantile](retake/day3.md)
+  - [📝 Day 4 전 복습 (Day 3 오답·어려운 것)](retake/복습_day3.md)
 
 - [공부계획 (지난번)](공부계획.md)
 - [오답노트](오답노트.md)

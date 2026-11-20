@@ -26,6 +26,9 @@ df.groupby('team')['fruit'].agg(lambda x: x.mode()[0])  # ✅
 ```
 
 외우는 순서 3단계:
+1. x.mode()[0] : 최빈값
+2. lambda x: x.mode()[0]
+3. .agg(lambda x: x.mode()[0])
 
 | 단계 | 코드 | 뜻 |
 |---|---|---|
@@ -83,11 +86,35 @@ cond.sum()                   # 7 — True 개수
 
 ---
 
+### ④ ⭐ 필터 결과는 일단 변수에 담는다 (셀프 퀴즈 Q4에서 나온 습관)
+
+```python
+s = df[df['region'] == '서울']                     # ① 필터 결과를 변수에
+print(len(s))                                       # ② 중간 확인 → 14
+round(len(s[s['category'] == '가전']) / len(s), 3)  # ③ 분자도 s, 분모도 s → 0.214
+```
+
+| 왜 | 설명 |
+|---|---|
+| 같은 표를 두 번 쓴다 | 비율 = 분자·분모 모두 "서울 주문". 변수 없으면 긴 필터를 두 번 쳐야 하고 오타 위험 2배 |
+| 안쪽 조건도 같은 표여야 한다 | `s[df['category'] == '가전']` ❌ 바깥은 서울만(14행), 안쪽은 전체(40행) → 섞임 |
+| 중간 확인 | 시험장은 한 줄씩 실행이 안 된다 → 변수에 담아 `print(len(s))` |
+
+| 상황 | 변수로 빼기 |
+|---|---|
+| 같은 필터 결과를 **두 번 이상** 씀 | ✅ 꼭 |
+| 필터 → 정렬 → 꺼내기, **단계 3개 이상** | ✅ 추천 |
+| `len(df[조건])` 한 번에 끝남 | 한 줄도 OK |
+
+> 오타 방지: 괄호·따옴표는 **열면 바로 닫고** 안을 채운다. `df[df'region' == '서울]` ❌ → `df[df['region'] == '서울']` ✅
+
+---
+
 ## 3. 1분 셀프 퀴즈
 
 <details>
 <summary>Q1. 지역별 주문 건수 중 2번째로 많은 지역 이름</summary>
-
+A. df['region'].value_counts().index[1]
 ```python
 df['region'].value_counts().index[1]
 ```
@@ -96,6 +123,7 @@ value_counts는 이미 많은 순 → 2번째 = `index[1]`
 
 <details>
 <summary>Q2. 분류별 rating 평균이 가장 낮은 분류 이름</summary>
+A. df.groupby('category')['rating'].mean().sort_values(ascending=False).index[-1]
 
 ```python
 df.groupby('category')['rating'].mean().idxmin()
@@ -104,6 +132,10 @@ df.groupby('category')['rating'].mean().idxmin()
 
 <details>
 <summary>Q3. 각 주문의 qty가 자기 분류의 qty 평균 이상인 주문 수</summary>
+
+A. df['qty_mean'] = df.groupby('category')['qty'].transform('mean');
+len(df[df['qty'] >= df['qty_mean']])
+
 
 ```python
 df['qm'] = df.groupby('category')['qty'].transform('mean')
@@ -114,6 +146,9 @@ len(df[df['qty'] >= df['qm']])
 
 <details>
 <summary>Q4. 서울 주문 중 가전의 비율 (소수 셋째)</summary>
+s = df[df['region'] == '서울']
+A. round(s['category'].value_counts(normalize=True)['가전'],3)
+
 
 ```python
 s = df[df['region'] == '서울']
@@ -124,11 +159,57 @@ round(len(s[s['category'] == '가전']) / len(s), 3)
 
 <details>
 <summary>Q5. 지역별 최빈 분류(category)</summary>
+A. df.groupby('region')['category'].agg(lambda x:x.mode()[0])
+
+
+
+
+
 
 ```python
 df.groupby('region')['category'].agg(lambda x: x.mode()[0])
 ```
 </details>
+
+### 셀프 퀴즈 채점 — 3 / 5 → 재풀이 5 / 5 ✅ (2026-11-20)
+
+| # | 내 답 | 결과 | 원인 |
+|---|---|---|---|
+| Q1 | `value_counts().index[1]` → 경기 | ✅ | |
+| Q2 | `...mean().sort_values(ascending=False).index[-1]` → 의류 | ✅ | 내림차순의 맨 끝 = 최솟값. `idxmin()`이 더 짧다 |
+| Q3 | `df.groupby('order')['qty'].mean()` | ❌ | ① 그룹 기준이 `'category'`가 아님 (KeyError) ② **`mean()` → 4행**이라 40행과 비교 불가 → `transform('mean')` ③ `'qty_mean` 따옴표 안 닫힘 |
+| Q4 | `df[...].values_counts(normalize=True)[df['category']=='가전']` | ❌ | ① `values_counts` 오타 (`value_counts`) ② 컬럼(`['category']`) 선택 없이 표 전체에 씀 ③ 비율표에서 꺼낼 땐 조건이 아니라 **이름** `['가전']` ④ `round(…, 3)` 없음 |
+| Q5 | `agg(lambda x: x.mode()[0])` | ✅ | 어려웠던 것 ① 성공 👍 |
+
+**Q3 — transform 을 또 놓침 (지난번 Day 9에도 같은 실수 ⚠️)**
+
+```python
+df['qm'] = df.groupby('category')['qty'].transform('mean')   # 40행 — 각 행 옆에 자기 분류 평균
+len(df[df['qty'] >= df['qm']])                                # 18
+```
+
+> "**자기** ○○의 평균과 비교" → `transform`. `mean()`은 그룹 수만큼(4행)만 나온다.
+
+**Q4 — 내 아이디어(normalize)를 살려서 고치면**
+
+```python
+s = df[df['region'] == '서울']                                   # ① 서울만
+round(s['category'].value_counts(normalize=True)['가전'], 3)     # ② category 비율표 → '가전' → 0.214
+round(len(s[s['category'] == '가전']) / len(s), 3)              # 방법 B — 같은 답 0.214
+```
+
+> 한 줄에 다 넣으려다 꼬였다. **필터 결과를 변수(`s`)에 담고 → 다음 줄에서 계산**하면 실수가 줄어든다.
+
+**md에 적은 재풀이 (2026-11-20) — 실행해 보니 아직 둘 다 에러**
+
+| # | 재풀이 | 실행 결과 | 남은 실수 |
+|---|---|---|---|
+| Q3 | `df.groupby('order')['qty'].transform('mean')` | 💥 KeyError: 'order' | transform ✅ 고침. **그룹 기준** `'order'` → `'category'` (고치면 18 ✅) |
+| Q4 | `s = df[df['region'] == '서울]` / `s['cateogry']...` | 💥 SyntaxError, KeyError: 'cateogry' | 변수로 빼기 ✅ 고침. **`'서울` 따옴표**, **`cateogry` 철자** (고치면 0.214 ✅) |
+
+**오타 수정 후 재채점 — 5 / 5 ✅** (md 답을 그대로 실행: Q1 경기, Q2 의류, Q3 18, Q4 0.214, Q5 ✅)
+
+> 생각(transform, 변수로 빼기)은 다 맞게 고쳤다. 남은 건 **오타 3개**였다 — md에선 안 보이고 실행하면 바로 보인다 → 그래서 복습도 `workspace/review_day2.py`로 푼다.
 
 ---
 
