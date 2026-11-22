@@ -20,6 +20,14 @@
 
 ## 2. ⭐ 내가 `**` 표시한 것
 
+### ⭐⭐⭐ True/False: `.sum()` = 개수, `.mean()` = 비율 (복습 R5에서 "진짜 중요")
+
+```python
+df['is_weekend'] = df['order_dt'].dt.dayofweek >= 5
+df.groupby('city')['is_weekend'].mean()    # 도시별 주말 비율
+```
+> 자세한 설명·함정·연습문제 → [⭐ 핵심 반복 복습](핵심_반복복습.md)
+
 ### ① 대소문자 무시는 `.lower()` 먼저 — 국룰 맞다
 
 ```python
@@ -78,6 +86,47 @@ df['email'].str.lower().str.endswith('@gmail.com')
 | R5 | 인천, 0.667 | `df['is_weekend'] = df['order_dt'].dt.dayofweek >= 5` → `df['city'] = ...str.split().str[0]` → `groupby('city')['is_weekend'].mean()` |
 
 </details>
+
+### 셀프 퀴즈 채점 — 3 / 5 + △ 2 (2026-11-22)
+
+| # | 내 출력 | 정답 | 결과 | 메모 |
+|---|---|---|---|---|
+| R1 | 17 | 17 | ✅ | `lower()` → `endswith('@naver.com')` → `.sum()` — Day 3 Q3 실수 고쳐짐 👍 |
+| R2 | `6    27800.0` (Series) | 27800.0 | △ | 값은 맞음. 이미 일요일만 걸렀으니 groupby 필요 없음 → `round(r2['amount'].mean(), 2)` |
+| R3 | (출력 없음) | 31 | △ | `pd.cut(..., right=False)` 정확. **마지막에 건수를 안 셈** → `df['grade'].value_counts()['지연']` |
+| R4 | 0 | 0 | ✅ | |
+| R5 | 인천 0.667 | 인천 0.667 | ✅ | 분자 ÷ 분모 방식. 아래 함정 확인 |
+
+**R5 — 내 방식(분자 ÷ 분모)은 맞다. 단, "0건 그룹"에서 차이가 난다**
+
+```python
+# 내 풀이 ✅
+r5_2 = df.groupby('city')['dayofweek'].count()                        # 분모: 도시별 전체 주문
+r5_1 = df[df['dayofweek'] >= 5].groupby('city')['dayofweek'].count()  # 분자: 도시별 주말 주문
+r = r5_1 / r5_2                                                        # 이름표(도시)끼리 맞춰서 나눔
+
+# 다른 방법 — True/False 컬럼의 평균 = 비율
+df['is_weekend'] = df['dayofweek'] >= 5
+df.groupby('city')['is_weekend'].mean()
+```
+
+| 도시 | 분자 | 분모 | 비율 |
+|---|---|---|---|
+| 경기 | 2 | 7 | 0.286 |
+| 부산 | 3 | 9 | 0.333 |
+| 서울 | 7 | 18 | 0.389 |
+| 인천 | 4 | 6 | **0.667** |
+
+가상 실험 — **인천의 주말 주문이 0건**이었다면:
+
+| 방법 | 인천 | 가장 **낮은** 도시 (`idxmin`) |
+|---|---|---|
+| 분자 ÷ 분모 | **NaN** (주말 0건이라 분자에 인천이 아예 없음) | 경기 ❌ |
+| `is_weekend` 평균 | **0.0** | 인천 ✅ |
+
+> 필터 후 groupby하면 **0건인 그룹은 결과에서 사라진다.** 그래서 나누면 NaN.
+> "가장 높은" 문제에선 영향이 없지만, "가장 낮은" 문제에선 답이 틀린다.
+> **그룹별 비율은 True/False 컬럼 → `groupby().mean()`이 더 안전하다.**
 
 ---
 
