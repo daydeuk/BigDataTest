@@ -7,3 +7,7 @@ practice/day14_type3_practice.md
 /data/
 .venv/
 __pycache__/
+
+# 2유형 제출 파일 (연습용)
+/result.csv
+workspace/result.csv

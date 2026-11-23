@@ -8,6 +8,8 @@
   - [📝 Day 3 전 복습 (Day 2 오답·어려운 것)](retake/복습_day2.md)
   - [Day 3 — 날짜·문자열·파생 컬럼·quantile](retake/day3.md)
   - [📝 Day 4 전 복습 (Day 3 오답·어려운 것)](retake/복습_day3.md)
+  - [Day 4 — 2유형 ① 분류 전체 흐름](retake/day4.md)
+  - [📝 Day 5 전 복습 (Day 4 오답·5단계)](retake/복습_day4.md)
 
 - [공부계획 (지난번)](공부계획.md)
 - [오답노트](오답노트.md)
