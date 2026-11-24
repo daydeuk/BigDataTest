@@ -10,6 +10,8 @@
   - [📝 Day 4 전 복습 (Day 3 오답·어려운 것)](retake/복습_day3.md)
   - [Day 4 — 2유형 ① 분류 전체 흐름](retake/day4.md)
   - [📝 Day 5 전 복습 (Day 4 오답·5단계)](retake/복습_day4.md)
+  - [Day 5 — 2유형 ② 회귀 + 라벨 인코딩](retake/day5.md)
+  - [📝 Day 6 전 복습 (Day 5 오답·회귀·라벨)](retake/복습_day5.md)
 
 - [공부계획 (지난번)](공부계획.md)
 - [오답노트](오답노트.md)
