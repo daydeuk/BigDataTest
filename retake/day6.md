@@ -230,9 +230,21 @@ print(model2.pvalues['hours'])
 
 ## (시간 남으면) ANOVA — 3그룹 이상 평균 비교
 
+| 그룹 수 | 검정 | 함수 |
+|---|---|---|
+| 2개 | 독립 t검정 | `stats.ttest_ind(a, b)` |
+| **3개 이상** | **일원 분산분석** | **`stats.f_oneway(g1, g2, g3, …)`** |
+
 ```python
-stat, p = stats.f_oneway(g1, g2, g3)
+g1 = df[df['category'] == '식품']['qty']     # 그룹마다 필터 (Day 1)
+g2 = df[df['category'] == '의류']['qty']
+g3 = df[df['category'] == '가전']['qty']
+g4 = df[df['category'] == '도서']['qty']
+stat, p = stats.f_oneway(g1, g2, g3, g4)     # Day 2 주문 데이터: 1.104  0.36 → 채택
 ```
+
+> 귀무가설: **모든** 그룹 평균이 같다 / 대립: **적어도 하나** 다르다. 판단은 p < 0.05 → 기각
+> 단서: "3개 이상 그룹", "지역별 평균 차이", "분산분석". 이름 = **F**검정 + **one way**(기준 하나)
 
 ---
 

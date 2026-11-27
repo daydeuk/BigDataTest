@@ -201,3 +201,44 @@ np.exp(model2.params['exercise_hours'])
 | 모델 이름 | 2-6에서 `model = smf.logit(...)` → 선형 모델 사라짐 | `model2` |
 | answer 칸 | 비어 있음 → 채점기 0점 | 변수로 채우기 (시험장의 "답 칸 옮겨 적기" 연습) |
 | import | `stats`, `smf`를 두 번씩 | 맨 위 한 번 (있어도 에러는 아님) |
+
+---
+
+## ➕ ANOVA 연습 (4문제) — `workspace/review_anova.py`
+
+> 3그룹 이상 평균 비교 → `stats.f_oneway(g1, g2, g3, …)`. 그룹은 Day 1 필터로 하나씩.
+> 모든 값은 소수 셋째 자리, 판단은 유의수준 0.05.
+
+| # | 데이터 | 문제 | 답 |
+|---|---|---|---|
+| A1 | Day 2 `retake/data/day2_orders.csv` | 지역(`region`, 5곳)별 `qty` 평균이 다른가? | F 통계량, p-value, 기각/채택 |
+| A2 | Day 3 `retake/data/day3_delivery.csv` | `address`의 첫 단어(시/도, 4곳)별 `deliver_min` 평균이 다른가? | F 통계량, p-value, 기각/채택 |
+| A3 | Day 5 `retake/data/day5/car_train.csv` | 브랜드(`brand`, 5개)별 `price` 평균이 다른가? | F 통계량, 기각/채택 |
+| A4 | Day 5 같은 데이터 | **BMW를 제외한** 4개 브랜드별 `price` 평균이 다른가? | F 통계량, 기각/채택 |
+
+<details>
+<summary>막히면 열기</summary>
+
+```python
+g1 = df[df['region'] == '경기']['qty']
+g2 = df[df['region'] == '광주']['qty']
+# … 그룹 수만큼
+stat, p = stats.f_oneway(g1, g2, g3, g4, g5)
+```
+- A2: 먼저 `df['city'] = df['address'].str.split().str[0]` (Day 3)
+- A4: BMW만 빼고 4개 그룹으로 `f_oneway`
+- (빠른 방법) `groups = [df[df['brand'] == b]['price'] for b in df['brand'].unique()]` → `stats.f_oneway(*groups)` — `*`는 목록을 풀어서 하나씩 넣어 준다
+</details>
+
+### ANOVA 채점 (11/27) — A1 ✅ · A2 ✅ · A4 ✅ (A3 미풀이)
+
+| # | 최종 출력 | 정답 | 과정에서 고친 것 |
+|---|---|---|---|
+| A1 | 0.861 / 0.497 / 채택 | 같음 | 처음엔 판단만 출력 → `print(round(stat, 3), round(p, 3))` 추가 |
+| A2 | 0.685 / 0.567 / 채택 | 같음 | `stats.one_way` → **`stats.f_oneway`** (AttributeError), round 추가 |
+| A4 | 14.363 / 0.0 / 기각 | 같음 | **if 아래 기각/채택이 거꾸로** (`p < 0.05: '채택'`) → 고침 — Day 6 Q1과 같은 실수 반복 ⚠️ |
+
+> 질문: groupby().mean() 필요? → 아니다. `f_oneway`·`ttest_ind`는 **원래 값 목록**을 받아 안에서 평균·흩어짐을 계산 (평균만 넣으면 검정 불가) / `<` vs `<=` → 기준은 `p < 0.05` 기각, 딱 0.05는 사실상 안 나와 결과 같음
+> 습관: `stat, p = …` 다음 줄은 **`print(round(stat, 3), round(p, 3))`** 세트 → 그다음 if문
+> `has no attribute '…'` = 그런 이름 없음 → `dir(stats)`로 확인
+> 원래 컬럼(`address`)을 덮어쓰지 말고 새 컬럼(`city`)으로
