@@ -41,12 +41,17 @@ p = None
 if not os.path.exists(S['result']):
     ok = False
     print(f"  ❌ {S['result']} 가 없다 — 프로젝트 폴더에 이 이름으로 저장했는지 확인")
-    if os.path.exists('result.csv'):
+    src_txt = open(S['src'], encoding='utf-8').read() if os.path.exists(S['src']) else ''
+    if re.search(r"to_csv\(\s*['\"]%s['\"]" % re.escape(S['result']), src_txt):
+        print(f"     → 풀이 파일에는 to_csv('{S['result']}')가 있다 = 고친 뒤 실행(▷)을 안 한 것. 풀이 파일을 다시 실행하고 채점")
+    elif os.path.exists('result.csv'):
         print("     → result.csv 가 보인다. 이번 문제의 파일 이름은 "
               f"{S['result']} (실전 분류 때 만든 result.csv일 수도 있음)")
 else:
     r = pd.read_csv(S['result'])
     n_test = len(pd.read_csv(S['test']))
+    if os.path.exists(S['src']) and os.path.getmtime(S['src']) > os.path.getmtime(S['result']) + 1:
+        print('  ⚠️ 풀이 파일을 결과 파일보다 나중에 고쳤다 → 고친 뒤 다시 실행(▷)했는지 확인 (아래 점수는 옛 결과)')
     if list(r.columns) != ['pred']:
         ok = False
         print(f'  ❌ 컬럼이 {list(r.columns)} — pred 하나여야 한다')
